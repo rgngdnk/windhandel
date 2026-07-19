@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <path id="petal" d="M -34 20 C -50 -35 -18 -95 0 -105 C 18 -95 50 -35 34 20 C 18 34 -18 34 -34 20 Z"/>
+    <path id="flame" d="M -10 15 C -14 -20 -6 -55 0 -65 C 6 -55 14 -20 10 15 C 6 22 -6 22 -10 15 Z"/>
+
+    <linearGradient id="petalOuter" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F2E7D8"/>
+      <stop offset="100%" stop-color="#DCC9AC"/>
+    </linearGradient>
+    <linearGradient id="petalCenter" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F4E9DA"/>
+    </linearGradient>
+    <linearGradient id="flameGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7A1620"/>
+      <stop offset="100%" stop-color="#C1442D"/>
+    </linearGradient>
+    <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F3D77E"/>
+      <stop offset="100%" stop-color="#A9790F"/>
+    </linearGradient>
+    <linearGradient id="stemGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6FA189"/>
+      <stop offset="100%" stop-color="#436B58"/>
+    </linearGradient>
+  </defs>
+
+  <!-- coin ring, no fill -->
+
+  <!-- stem -->
+  <path d="M 256 270 C 250 305, 250 345, 256 376" fill="none" stroke="url(#stemGrad)" stroke-width="12" stroke-linecap="round"/>
+  <!-- leaf -->
+  <path d="M 256 322 C 285 316, 305 328, 312 350 C 288 352, 265 344, 256 322 Z" fill="url(#stemGrad)"/>
+
+  <!-- tulip cup: outer petals behind, center in front -->
+  <use href="#petal" transform="translate(220,262) rotate(-26) scale(0.88)" fill="url(#petalOuter)"/>
+  <use href="#flame" transform="translate(220,262) rotate(-26) scale(0.88)" fill="url(#flameGrad)" opacity="0.75"/>
+
+  <use href="#petal" transform="translate(292,262) rotate(26) scale(0.88)" fill="url(#petalOuter)"/>
+  <use href="#flame" transform="translate(292,262) rotate(26) scale(0.88)" fill="url(#flameGrad)" opacity="0.75"/>
+
+  <use href="#petal" transform="translate(256,240) scale(1.08)" fill="url(#petalCenter)"/>
+  <use href="#flame" transform="translate(256,240) scale(1.08)" fill="url(#flameGrad)" opacity="0.9"/>
+  <path d="M 256 135 L 256 170" stroke="#FFFFFF" stroke-width="2" opacity="0.6"/>
+</svg>

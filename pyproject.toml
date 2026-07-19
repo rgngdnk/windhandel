@@ -7,7 +7,10 @@ authors = [
     { name = "rgngdnk", email = "225964264+rgngdnk@users.noreply.github.com" }
 ]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "dotenv>=0.9.9",
+    "psycopg>=3.3.4",
+]
 
 [project.scripts]
 windhandel = "windhandel:main"
