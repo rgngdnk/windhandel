@@ -9,11 +9,15 @@ authors = [
 requires-python = ">=3.12"
 dependencies = [
     "dotenv>=0.9.9",
-    "psycopg>=3.3.4",
+    "fastapi[standard]>=0.139.2",
+    "httpx>=0.28.1",
+    "psycopg[binary]>=3.3.4",
+    "textual[dev]>=8.2.8",
+    "uvicorn>=0.51.0",
 ]
 
 [project.scripts]
-windhandel = "windhandel:main"
+windhandel = "windhandel.launcher:main"
 
 [build-system]
 requires = ["uv_build>=0.11.26,<0.12.0"]
