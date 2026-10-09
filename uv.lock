@@ -1161,6 +1161,7 @@ dependencies = [
     { name = "fastapi", extra = ["standard"] },
     { name = "httpx" },
     { name = "psycopg", extra = ["binary"] },
+    { name = "pydantic" },
     { name = "textual" },
     { name = "uvicorn" },
 ]
@@ -1171,6 +1172,7 @@ requires-dist = [
     { name = "fastapi", extras = ["standard"], specifier = ">=0.139.2" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "psycopg", extras = ["binary"], specifier = ">=3.3.4" },
+    { name = "pydantic", specifier = ">=2.13.4" },
     { name = "textual", extras = ["dev"], specifier = ">=8.2.8" },
     { name = "uvicorn", specifier = ">=0.51.0" },
 ]
