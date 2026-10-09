@@ -1,4 +1,6 @@
 import asyncio
+import logging
+
 import httpx
 from textual.app import App, ComposeResult
 from textual.screen import Screen
@@ -6,7 +8,9 @@ from textual.widgets import DataTable, Header, Footer, Static, Input, LoadingInd
 from textual.message import Message
 from textual.containers import Horizontal
 
-API_BASE = "http://127.0.0.1:8000"
+from windhandel.config import API_BASE, API_STARTUP_TIMEOUT, log_path
+
+logger = logging.getLogger(__name__)
 
 
 MNEMONICS = {}
@@ -41,28 +45,38 @@ class CommandBar(Horizontal):
 
 
 class LoadingScreen(Screen):
+    POLL_INTERVAL = 0.5
+
     class Ready(Message):
         """Posted when the health check succeeds."""
 
     def compose(self) -> ComposeResult:
-        yield Static("Starting API — please wait...", id="status")
+        yield Static(f"Starting API at {API_BASE} — please wait...", id="status")
         yield LoadingIndicator()
 
     async def on_mount(self) -> None:
         self.run_worker(self.wait_for_api(), exclusive=True)
 
     async def wait_for_api(self) -> None:
+        attempts = max(1, int(API_STARTUP_TIMEOUT / self.POLL_INTERVAL))
+        last_error = "no response"
         async with httpx.AsyncClient() as client:
-            for _ in range(60):
+            for _ in range(attempts):
                 try:
                     r = await client.get(f"{API_BASE}/health", timeout=1)
                     if r.status_code == 200:
                         self.post_message(self.Ready())
                         return
-                except httpx.RequestError:
-                    pass
-                await asyncio.sleep(0.5)
-            self.query_one("#status", Static).update("API failed to start.")
+                    last_error = f"HTTP {r.status_code}"
+                except httpx.RequestError as e:
+                    last_error = type(e).__name__
+                await asyncio.sleep(self.POLL_INTERVAL)
+
+        logger.error("API never became healthy at %s (%s)", API_BASE, last_error)
+        self.query_one("#status", Static).update(
+            f"API failed to start at {API_BASE} ({last_error}).\n"
+            f"See {log_path('api')}"
+        )
 
 
 class HomeScreen(Screen):
@@ -92,7 +106,7 @@ class WindhandelApp(App):
         self.push_screen(LoadingScreen())
 
     def on_loading_screen_ready(self, message: LoadingScreen.Ready) -> None:
-        self.push_screen(HomeScreen())
+        self.switch_screen(HomeScreen())
 
     def on_command_bar_submitted(self, message: CommandBar.Submitted) -> None:
         code = message.code
